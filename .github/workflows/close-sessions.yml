@@ -9,8 +9,7 @@ jobs:
   close-sessions:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -24,4 +23,3 @@ jobs:
         run: node scripts/closeSessions.js
         env:
           API_URL: ${{ secrets.API_URL }}
-          API_TOKEN: ${{ secrets.API_TOKEN }}
