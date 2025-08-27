@@ -1,0 +1,27 @@
+name: Close Active Sessions
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # tous les jours à 00h UTC
+  workflow_dispatch:
+
+jobs:
+  close-sessions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run close sessions script
+        run: node scripts/closeSessions.js
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          API_TOKEN: ${{ secrets.API_TOKEN }}
