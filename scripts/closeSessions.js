@@ -1,26 +1,29 @@
 import fetch from "node-fetch";
 import { DateTime } from "luxon";
+import dotenv from "dotenv";
+dotenv.config();
 
 const API_URL = process.env.API_URL;
-const TOKEN = process.env.API_TOKEN;
 
 // Récupère toutes les sessions actives
 async function getActiveSessions() {
   const query = `
     query {
-      sessions(filters: { end: { null: true } }) {
-        data {
-          id
-        }
-      }
+  sessions(
+    pagination: { start: 0, limit: -1 }
+    filters: { end: { null: true } }
+  ) {
+    data {
+      id
     }
+  }
+}
   `;
 
   const res = await fetch(API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN}`,
     },
     body: JSON.stringify({ query }),
   });
@@ -61,7 +64,6 @@ async function closeSession(sessionId) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN}`,
     },
     body: JSON.stringify({ query: mutation, variables }),
   });
